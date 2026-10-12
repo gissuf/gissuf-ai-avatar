@@ -22,6 +22,9 @@ class RukkyAvatar {
     
     // DOM Elements
     this.stageContainer = document.getElementById('avatarStageContainer');
+    this.characterWrapper = document.getElementById('characterWrapper');
+    this.imageAvatarWrapper = document.getElementById('imageAvatarWrapper');
+    this.avatarPortraitImg = document.getElementById('avatarPortraitImg');
     this.hudDot = document.getElementById('hudDot');
     this.hudStateLabel = document.getElementById('hudStateLabel');
     this.eyelidLeft = document.getElementById('eyelidLeft');
@@ -30,6 +33,28 @@ class RukkyAvatar {
     this.waveformCanvas = document.getElementById('waveformCanvas');
     this.waveCtx = this.waveformCanvas ? this.waveformCanvas.getContext('2d') : null;
     this.btnToggleFullscreen = document.getElementById('btnToggleFullscreen');
+
+    // Avatar Customizer Elements
+    this.btnChangeAvatar = document.getElementById('btnChangeAvatar');
+    this.avatarModal = document.getElementById('avatarModal');
+    this.btnCloseAvatarModal = document.getElementById('btnCloseAvatarModal');
+    this.cardPresetRealistic = document.getElementById('cardPresetRealistic');
+    this.cardPresetVector = document.getElementById('cardPresetVector');
+    this.cardPresetCustom = document.getElementById('cardPresetCustom');
+    this.avatarFileInput = document.getElementById('avatarFileInput');
+    this.uploadDropzone = document.getElementById('uploadDropzone');
+    this.btnBrowseFile = document.getElementById('btnBrowseFile');
+    this.btnApplyAvatarChoice = document.getElementById('btnApplyAvatarChoice');
+    this.btnResetAvatarDefault = document.getElementById('btnResetAvatarDefault');
+    this.customThumbnailImg = document.getElementById('customThumbnailImg');
+    this.customGlyphIcon = document.getElementById('customGlyphIcon');
+    this.customPresetDesc = document.getElementById('customPresetDesc');
+
+    // Avatar Modes: 'realistic', 'vector', 'custom'
+    this.currentMode = localStorage.getItem('gissuf_avatar_mode') || 'realistic';
+    this.customImageData = localStorage.getItem('gissuf_custom_avatar_data') || null;
+    this.selectedModalMode = this.currentMode;
+    this.tempUploadedImage = null;
 
     // Viseme / Mouth Shapes (SVG path definitions for dynamic morphing)
     this.mouthShapes = {
@@ -53,9 +78,11 @@ class RukkyAvatar {
   }
 
   init() {
+    this.applyAvatarMode(this.currentMode, this.customImageData);
     this.startBlinkingLoop();
     this.startWaveformLoop();
     this.setupEvents();
+    this.setupAvatarCustomizerModal();
     this.setState(this.STATES.IDLE);
     console.log("[GISSUF] Rukky Avatar Engine initialized.");
   }
@@ -82,6 +109,190 @@ class RukkyAvatar {
     } else {
       this.btnToggleFullscreen.querySelector('span').textContent = 'Stage View';
     }
+  }
+
+  applyAvatarMode(mode, customData = null) {
+    this.currentMode = mode;
+    localStorage.setItem('gissuf_avatar_mode', mode);
+
+    if (mode === 'vector') {
+      if (this.characterWrapper) this.characterWrapper.classList.add('active');
+      if (this.imageAvatarWrapper) this.imageAvatarWrapper.classList.remove('active');
+    } else if (mode === 'custom') {
+      if (this.characterWrapper) this.characterWrapper.classList.remove('active');
+      if (this.imageAvatarWrapper) this.imageAvatarWrapper.classList.add('active');
+      if (this.avatarPortraitImg && customData) {
+        this.avatarPortraitImg.src = customData;
+      }
+    } else {
+      // Default: 'realistic'
+      if (this.characterWrapper) this.characterWrapper.classList.remove('active');
+      if (this.imageAvatarWrapper) this.imageAvatarWrapper.classList.add('active');
+      if (this.avatarPortraitImg) {
+        this.avatarPortraitImg.src = 'assets/rukky_realistic.png';
+      }
+    }
+  }
+
+  setupAvatarCustomizerModal() {
+    // Open modal button
+    if (this.btnChangeAvatar) {
+      this.btnChangeAvatar.addEventListener('click', () => {
+        this.openAvatarModal();
+      });
+    }
+
+    // Close modal button
+    if (this.btnCloseAvatarModal) {
+      this.btnCloseAvatarModal.addEventListener('click', () => {
+        this.closeAvatarModal();
+      });
+    }
+
+    // Close on backdrop click
+    if (this.avatarModal) {
+      this.avatarModal.addEventListener('click', (e) => {
+        if (e.target === this.avatarModal) {
+          this.closeAvatarModal();
+        }
+      });
+    }
+
+    // Preset cards
+    const cards = [
+      { elem: this.cardPresetRealistic, mode: 'realistic' },
+      { elem: this.cardPresetVector, mode: 'vector' },
+      { elem: this.cardPresetCustom, mode: 'custom' }
+    ];
+
+    cards.forEach(({ elem, mode }) => {
+      if (elem) {
+        elem.addEventListener('click', () => {
+          this.selectModalPreset(mode);
+        });
+      }
+    });
+
+    // File input browse button
+    if (this.btnBrowseFile && this.avatarFileInput) {
+      this.btnBrowseFile.addEventListener('click', () => {
+        this.avatarFileInput.click();
+      });
+    }
+
+    // Dropzone click
+    if (this.uploadDropzone && this.avatarFileInput) {
+      this.uploadDropzone.addEventListener('click', (e) => {
+        if (e.target !== this.btnBrowseFile) {
+          this.avatarFileInput.click();
+        }
+      });
+
+      // Drag and drop events
+      this.uploadDropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        this.uploadDropzone.classList.add('dragover');
+      });
+
+      this.uploadDropzone.addEventListener('dragleave', () => {
+        this.uploadDropzone.classList.remove('dragover');
+      });
+
+      this.uploadDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        this.uploadDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          this.handleImageFile(e.dataTransfer.files[0]);
+        }
+      });
+    }
+
+    // File input change
+    if (this.avatarFileInput) {
+      this.avatarFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          this.handleImageFile(e.target.files[0]);
+        }
+      });
+    }
+
+    // Apply button
+    if (this.btnApplyAvatarChoice) {
+      this.btnApplyAvatarChoice.addEventListener('click', () => {
+        if (this.selectedModalMode === 'custom' && this.tempUploadedImage) {
+          this.customImageData = this.tempUploadedImage;
+          localStorage.setItem('gissuf_custom_avatar_data', this.customImageData);
+        }
+        this.applyAvatarMode(this.selectedModalMode, this.customImageData);
+        this.closeAvatarModal();
+      });
+    }
+
+    // Reset default button
+    if (this.btnResetAvatarDefault) {
+      this.btnResetAvatarDefault.addEventListener('click', () => {
+        this.selectedModalMode = 'realistic';
+        this.applyAvatarMode('realistic');
+        this.selectModalPreset('realistic');
+        this.closeAvatarModal();
+      });
+    }
+  }
+
+  openAvatarModal() {
+    this.selectedModalMode = this.currentMode;
+    this.selectModalPreset(this.currentMode);
+
+    // Populate custom preview if exists
+    if (this.customImageData && this.customThumbnailImg) {
+      this.customThumbnailImg.src = this.customImageData;
+      this.customThumbnailImg.style.display = 'block';
+      if (this.customGlyphIcon) this.customGlyphIcon.style.display = 'none';
+      if (this.customPresetDesc) this.customPresetDesc.textContent = 'Active custom image';
+    }
+
+    if (this.avatarModal) {
+      this.avatarModal.style.display = 'flex';
+    }
+  }
+
+  closeAvatarModal() {
+    if (this.avatarModal) {
+      this.avatarModal.style.display = 'none';
+    }
+  }
+
+  selectModalPreset(mode) {
+    this.selectedModalMode = mode;
+    [this.cardPresetRealistic, this.cardPresetVector, this.cardPresetCustom].forEach((card) => {
+      if (card) {
+        if (card.dataset.mode === mode) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      }
+    });
+  }
+
+  handleImageFile(file) {
+    if (!file.type.startsWith('image/')) {
+      alert("Please upload an image file (PNG, JPG, or WEBP).");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.tempUploadedImage = e.target.result;
+      if (this.customThumbnailImg) {
+        this.customThumbnailImg.src = this.tempUploadedImage;
+        this.customThumbnailImg.style.display = 'block';
+      }
+      if (this.customGlyphIcon) this.customGlyphIcon.style.display = 'none';
+      if (this.customPresetDesc) this.customPresetDesc.textContent = file.name;
+      this.selectModalPreset('custom');
+    };
+    reader.readAsDataURL(file);
   }
 
   /**

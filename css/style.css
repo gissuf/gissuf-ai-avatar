@@ -1476,3 +1476,299 @@ label {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.3); opacity: 0.6; }
 }
+
+/* ==========================================================================
+   Realistic & Custom Image Avatar Mode Styling
+   ========================================================================== */
+
+/* Toggle between Vector and Image modes */
+.character-wrapper {
+  display: none;
+}
+.character-wrapper.active {
+  display: flex;
+}
+
+.image-avatar-wrapper {
+  display: none;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 320px;
+  align-items: center;
+  justify-content: center;
+}
+.image-avatar-wrapper.active {
+  display: flex;
+}
+
+.image-frame-container {
+  position: relative;
+  width: 270px;
+  height: 270px;
+  border-radius: 50%;
+  padding: 6px;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.15) 0%, rgba(12, 18, 32, 0.9) 70%);
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 0 25px var(--accent-glow), inset 0 0 15px rgba(0, 210, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: imageBreathe 5s ease-in-out infinite;
+  transition: all 0.4s ease;
+}
+
+@keyframes imageBreathe {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.015);
+  }
+}
+
+.avatar-portrait-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* State Reactions for Image Avatar */
+.avatar-stage-container.state-speaking .image-frame-container {
+  border-color: #10b981;
+  box-shadow: 0 0 35px rgba(16, 185, 129, 0.5), inset 0 0 20px rgba(16, 185, 129, 0.3);
+  animation: speakingBob 1.2s ease-in-out infinite;
+}
+
+@keyframes speakingBob {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  25% { transform: translateY(-3px) scale(1.02); }
+  50% { transform: translateY(-1px) scale(1.01); }
+  75% { transform: translateY(-3px) scale(1.025); }
+}
+
+.avatar-stage-container.state-speaking .speaking-wave-ring {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border-radius: 50%;
+  border: 2px solid #10b981;
+  pointer-events: none;
+  animation: speakingRipple 1.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes speakingRipple {
+  0% { transform: scale(0.96); opacity: 0.9; }
+  100% { transform: scale(1.22); opacity: 0; }
+}
+
+.avatar-stage-container.state-listening .image-frame-container {
+  border-color: #ef4444;
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.5), inset 0 0 20px rgba(239, 68, 68, 0.3);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.avatar-stage-container.state-thinking .image-frame-container {
+  border-color: #7928ca;
+  box-shadow: 0 0 35px rgba(121, 40, 202, 0.6), inset 0 0 20px rgba(121, 40, 202, 0.3);
+}
+
+/* HUD Corner Brackets around Portrait */
+.hud-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--accent-primary);
+  opacity: 0.75;
+  pointer-events: none;
+}
+.bracket-tl { top: -6px; left: -6px; border-top: 2px solid; border-left: 2px solid; }
+.bracket-tr { top: -6px; right: -6px; border-top: 2px solid; border-right: 2px solid; }
+.bracket-bl { bottom: -6px; left: -6px; border-bottom: 2px solid; border-left: 2px solid; }
+.bracket-br { bottom: -6px; right: -6px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* Cyber Scanline Overlay */
+.cyber-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.avatar-stage-container.state-thinking .cyber-scanline {
+  opacity: 0.8;
+  animation: scanlineSweep 2s ease-in-out infinite;
+}
+
+@keyframes scanlineSweep {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* ==========================================================================
+   Avatar Customizer Modal Styling
+   ========================================================================== */
+.avatar-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.avatar-preset-card {
+  background-color: var(--bg-darkest);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.avatar-preset-card:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-color);
+  transform: translateY(-2px);
+}
+
+.avatar-preset-card.active {
+  border-color: var(--accent-primary);
+  background-color: rgba(0, 210, 255, 0.08);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.preset-preview-box {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0b1120;
+}
+
+.avatar-preset-card.active .preset-preview-box {
+  border-color: var(--accent-primary);
+}
+
+.preset-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vector-preview {
+  background: linear-gradient(135deg, #1c253b, #0e131f);
+}
+
+.vector-preview-glyph, .custom-preview-glyph {
+  font-size: 2rem;
+}
+
+.preset-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--accent-primary);
+  color: #000000;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 1px 0;
+}
+
+.preset-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.preset-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.preset-desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 24px 16px;
+  text-align: center;
+  background-color: var(--bg-darkest);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.upload-dropzone:hover, .upload-dropzone.dragover {
+  border-color: var(--accent-primary);
+  background-color: rgba(0, 210, 255, 0.05);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-icon {
+  color: var(--accent-primary);
+  margin-bottom: 4px;
+}
+
+.dropzone-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dropzone-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.btn-secondary {
+  margin-top: 6px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 16px;
+  font-size: 0.78rem;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+

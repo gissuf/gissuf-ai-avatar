@@ -76,6 +76,13 @@
             <span class="char-role">AI Student &amp; Training Companion</span>
           </div>
           <div class="stage-controls">
+            <button class="stage-btn" id="btnChangeAvatar" title="Change or Upload Custom Avatar Image">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+              <span>Change Avatar</span>
+            </button>
             <button class="stage-btn" id="btnToggleFullscreen" title="Toggle Fullscreen Viewport (for OBS capture)">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
@@ -237,6 +244,30 @@
             </svg>
           </div>
 
+          <!-- Realistic Digital Human & Custom Image Avatar Wrapper -->
+          <div class="image-avatar-wrapper active" id="imageAvatarWrapper">
+            <div class="image-frame-halo" id="imageFrameHalo"></div>
+            <div class="image-frame-container" id="imageFrameContainer">
+              <!-- Futuristic HUD Corner Brackets -->
+              <div class="hud-bracket bracket-tl"></div>
+              <div class="hud-bracket bracket-tr"></div>
+              <div class="hud-bracket bracket-bl"></div>
+              <div class="hud-bracket bracket-br"></div>
+              
+              <!-- State Animated Halo Ring -->
+              <div class="state-ring" id="stateRing"></div>
+
+              <!-- Main Avatar Portrait Image -->
+              <img id="avatarPortraitImg" class="avatar-portrait-img" src="assets/rukky_realistic.png" alt="Rukky AI Avatar" />
+
+              <!-- Cyber Scanning Line Overlay -->
+              <div class="cyber-scanline" id="cyberScanline"></div>
+
+              <!-- Live Audio Ripple Ring for Speaking State -->
+              <div class="speaking-wave-ring" id="speakingWaveRing"></div>
+            </div>
+          </div>
+
           <!-- Avatar HUD Status Overlay -->
           <div class="avatar-hud-overlay">
             <div class="hud-state-indicator" id="hudStateIndicator">
@@ -382,6 +413,89 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Modal: Avatar Customizer & Image Upload -->
+  <div class="modal-backdrop" id="avatarModal" style="display: none;">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title">Customize Rukky's Appearance</div>
+          <div class="modal-subtitle">Select a visual style or upload your own custom character image</div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseAvatarModal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Preset Avatars Grid -->
+        <div class="settings-section">
+          <div class="section-title">Visual Character Presets</div>
+          <div class="avatar-presets-grid">
+            
+            <!-- Preset 1: Realistic Digital Human (Recommended) -->
+            <div class="avatar-preset-card active" id="cardPresetRealistic" data-mode="realistic">
+              <div class="preset-preview-box">
+                <img src="assets/rukky_realistic.png" alt="Realistic Rukky" />
+                <span class="preset-badge">Recommended</span>
+              </div>
+              <div class="preset-info">
+                <div class="preset-name">Realistic Digital Human</div>
+                <div class="preset-desc">High-definition cybernetic AI student with headset and GISSUF jacket.</div>
+              </div>
+            </div>
+
+            <!-- Preset 2: Vector Illustration -->
+            <div class="avatar-preset-card" id="cardPresetVector" data-mode="vector">
+              <div class="preset-preview-box vector-preview">
+                <span class="vector-preview-glyph">🤖</span>
+              </div>
+              <div class="preset-info">
+                <div class="preset-name">Vector Illustration</div>
+                <div class="preset-desc">Lightweight procedural vector animation with morphing mouth shapes.</div>
+              </div>
+            </div>
+
+            <!-- Preset 3: Custom Upload Card -->
+            <div class="avatar-preset-card" id="cardPresetCustom" data-mode="custom">
+              <div class="preset-preview-box custom-preview" id="customCardPreview">
+                <span class="custom-preview-glyph" id="customGlyphIcon">📷</span>
+                <img id="customThumbnailImg" style="display: none;" alt="Custom Upload" />
+              </div>
+              <div class="preset-info">
+                <div class="preset-name">Custom Image Upload</div>
+                <div class="preset-desc" id="customPresetDesc">Use any personal photo, artwork, or character graphic.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Custom Upload Drop Zone -->
+        <div class="settings-section">
+          <div class="section-title">Upload Custom Character Image</div>
+          <div class="upload-dropzone" id="uploadDropzone">
+            <input type="file" id="avatarFileInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" />
+            <div class="dropzone-content">
+              <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <div class="dropzone-title">Click to choose an image or drag &amp; drop here</div>
+              <div class="dropzone-hint">Supports PNG, JPG, JPEG, WEBP (Square portrait recommended)</div>
+              <button type="button" class="btn btn-secondary" id="btnBrowseFile">Select Image From Computer</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="stage-tool-btn" id="btnResetAvatarDefault">Reset to Default</button>
+        <button class="btn btn-primary" id="btnApplyAvatarChoice">Apply &amp; Save</button>
+      </div>
+    </div>
   </div>
 
   <!-- Modal: Settings & Configuration -->
