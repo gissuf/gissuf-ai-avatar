@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GISSUF AI Avatar — Version 0.1 | Rukky (AI Student)</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-cyan">
+  <!-- Application Container -->
+  <div class="app-layout">
+    
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-logo">
+          <svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="url(#brandGrad)" stroke-width="2.5" />
+            <polygon points="20,8 30,28 10,28" stroke="url(#brandGrad)" stroke-width="2" fill="rgba(0, 210, 255, 0.15)" />
+            <circle cx="20" cy="20" r="4" fill="#00d2ff" />
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#00d2ff" />
+                <stop offset="100%" stop-color="#7928ca" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <div class="brand-title">GISSUF AI AVATAR</div>
+          <div class="brand-subtitle">GISSUF TECHNOLOGY &bull; VIRTUAL HUMAN ENGINE</div>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="status-pill" id="systemStatusPill">
+          <span class="status-dot"></span>
+          <span class="status-text" id="systemStatusText">Connecting...</span>
+        </div>
+        <div class="mode-pill" id="modeBadge">
+          <span class="badge-icon">🎓</span>
+          <span id="modeText">Demo Mode</span>
+        </div>
+        <div class="version-tag">v0.1 Alpha</div>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-btn" id="btnZoomGuide" title="Zoom & OBS Camera Setup Guide">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7" />
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+          </svg>
+          <span class="btn-text">Zoom Guide</span>
+        </button>
+        <button class="icon-btn" id="btnOpenSettings" title="Voice & Avatar Settings">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span class="btn-text">Settings</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Grid: Avatar Stage & Conversation Panel -->
+    <main class="main-content">
+      
+      <!-- Left Panel: Avatar Stage -->
+      <section class="avatar-stage-container" id="avatarStageContainer">
+        <div class="stage-hud-bar">
+          <div class="character-identity">
+            <span class="char-name">Rukky</span>
+            <span class="char-role">AI Student &amp; Training Companion</span>
+          </div>
+          <div class="stage-controls">
+            <button class="stage-btn" id="btnToggleFullscreen" title="Toggle Fullscreen Viewport (for OBS capture)">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+              </svg>
+              <span>Stage View</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- The Avatar Viewport -->
+        <div class="avatar-viewport" id="avatarViewport">
+          <!-- Ambient Background Gradients & Holographic Grid -->
+          <div class="holo-grid"></div>
+          <div class="holo-halo" id="avatarHalo"></div>
+
+          <!-- Rukky Character Container (Scalable Vector & Canvas Rendering) -->
+          <div class="character-wrapper" id="characterWrapper">
+            <svg id="rukkySvg" class="rukky-character" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <!-- Gradients for Rukky -->
+                <radialGradient id="skinGlow" cx="50%" cy="40%" r="55%">
+                  <stop offset="0%" stop-color="#ffe3d1" />
+                  <stop offset="85%" stop-color="#f5caa6" />
+                  <stop offset="100%" stop-color="#dfa77e" />
+                </radialGradient>
+                <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#1c1924" />
+                  <stop offset="50%" stop-color="#2a2238" />
+                  <stop offset="100%" stop-color="#0f0c16" />
+                </linearGradient>
+                <linearGradient id="jacketGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#141a29" />
+                  <stop offset="50%" stop-color="#1c253b" />
+                  <stop offset="100%" stop-color="#0e131f" />
+                </linearGradient>
+                <linearGradient id="cyanNeon" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#00d2ff" />
+                  <stop offset="100%" stop-color="#00f2fe" />
+                </linearGradient>
+                <linearGradient id="innerCollar" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#7928ca" stop-opacity="0.9" />
+                </linearGradient>
+                <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Futuristic Holographic Halo Behind Head -->
+              <g id="haloGroup" class="halo-group">
+                <circle cx="200" cy="180" r="145" stroke="url(#cyanNeon)" stroke-width="1.5" stroke-dasharray="6 8" fill="none" opacity="0.4" class="spin-slow" />
+                <circle cx="200" cy="180" r="135" stroke="#7928ca" stroke-width="1" stroke-dasharray="2 12" fill="none" opacity="0.3" class="spin-reverse" />
+              </g>
+
+              <!-- Floating Body/Torso -->
+              <g id="torsoGroup" class="torso-group">
+                <!-- Outer Tech Jacket -->
+                <path d="M120 340 L80 480 L320 480 L280 340 Q200 375 120 340 Z" fill="url(#jacketGrad)" stroke="#2a3550" stroke-width="2" />
+                <!-- Cyber Seams on Jacket -->
+                <path d="M140 350 L110 480" stroke="#00d2ff" stroke-width="1.5" opacity="0.7" />
+                <path d="M260 350 L290 480" stroke="#00d2ff" stroke-width="1.5" opacity="0.7" />
+                <!-- Neon Collar Accent -->
+                <path d="M150 340 Q200 380 250 340 L240 375 Q200 405 160 375 Z" fill="url(#innerCollar)" filter="url(#softGlow)" />
+                <!-- GISSUF Tech Student Badge -->
+                <rect x="235" y="405" width="45" height="20" rx="4" fill="#0b0f19" stroke="#00d2ff" stroke-width="1" />
+                <text x="257" y="419" fill="#00d2ff" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="bold" text-anchor="middle">GISSUF</text>
+              </g>
+
+              <!-- Neck -->
+              <path d="M175 270 L175 345 Q200 360 225 345 L225 270 Z" fill="#e5b491" stroke="#c99573" stroke-width="1" />
+              <!-- Cyber Choker with Data Indicator -->
+              <rect x="175" y="315" width="50" height="12" rx="3" fill="#111625" stroke="#00d2ff" stroke-width="1" />
+              <circle id="neckLed" cx="200" cy="321" r="3" fill="#00d2ff" filter="url(#softGlow)" class="led-pulse" />
+
+              <!-- Back Hair Layers -->
+              <path d="M100 170 Q80 280 130 350 Q160 370 175 340 Q130 250 140 160 Z" fill="url(#hairGrad)" />
+              <path d="M300 170 Q320 280 270 350 Q240 370 225 340 Q270 250 260 160 Z" fill="url(#hairGrad)" />
+
+              <!-- Head Base Shape -->
+              <g id="headGroup" class="head-group">
+                <!-- Face Contour -->
+                <path d="M135 150 Q130 240 170 285 Q200 305 230 285 Q270 240 265 150 Q265 90 200 90 Q135 90 135 150 Z" fill="url(#skinGlow)" stroke="#deb08f" stroke-width="1.5" />
+
+                <!-- Ears -->
+                <path d="M135 175 Q125 190 135 210 Z" fill="#e5b491" />
+                <path d="M265 175 Q275 190 265 210 Z" fill="#e5b491" />
+
+                <!-- Futuristic Smart Earpiece / Audio Sensor on Left Ear -->
+                <g id="headsetGroup">
+                  <rect x="120" y="180" width="16" height="28" rx="6" fill="#0d1322" stroke="#00d2ff" stroke-width="1.5" />
+                  <circle cx="128" cy="194" r="4" fill="#00d2ff" class="led-pulse" filter="url(#softGlow)" />
+                  <path d="M128 205 Q135 240 155 250" stroke="#00d2ff" stroke-width="2" fill="none" opacity="0.8" />
+                  <circle cx="155" cy="250" r="2.5" fill="#00d2ff" filter="url(#softGlow)" />
+                </g>
+
+                <!-- Cheeks Blush -->
+                <ellipse cx="160" cy="225" rx="14" ry="7" fill="#ff7675" opacity="0.25" />
+                <ellipse cx="240" cy="225" rx="14" ry="7" fill="#ff7675" opacity="0.25" />
+
+                <!-- Nose -->
+                <path d="M198 200 Q200 220 204 223 Q200 225 196 223" fill="none" stroke="#cf9c7b" stroke-width="1.5" stroke-linecap="round" />
+
+                <!-- Eyebrows -->
+                <g id="eyebrowsGroup" class="eyebrows">
+                  <path id="browLeft" d="M152 165 Q168 158 184 167" fill="none" stroke="#2a2238" stroke-width="2.5" stroke-linecap="round" />
+                  <path id="browRight" d="M216 167 Q232 158 248 165" fill="none" stroke="#2a2238" stroke-width="2.5" stroke-linecap="round" />
+                </g>
+
+                <!-- Eyes Container -->
+                <g id="eyesGroup" class="eyes-container">
+                  <!-- Left Eye -->
+                  <g id="eyeLeft" transform="translate(168, 185)">
+                    <!-- Sclera -->
+                    <ellipse cx="0" cy="0" rx="16" ry="10" fill="#ffffff" stroke="#c0b5b0" stroke-width="0.5" />
+                    <!-- Iris -->
+                    <circle id="irisLeft" cx="0" cy="0" r="7.5" fill="#0080aa" />
+                    <circle cx="0" cy="0" r="4" fill="#0b172a" />
+                    <circle cx="0" cy="0" r="6" stroke="#00d2ff" stroke-width="1" fill="none" opacity="0.6" />
+                    <!-- Highlights -->
+                    <circle cx="-2.5" cy="-2.5" r="2" fill="#ffffff" />
+                    <circle cx="2" cy="2" r="1" fill="#ffffff" opacity="0.8" />
+                    <!-- Eyelid for Blinking -->
+                    <ellipse id="eyelidLeft" cx="0" cy="0" rx="17" ry="11" fill="url(#skinGlow)" class="eyelid" />
+                    <!-- Lashes line -->
+                    <path d="M-16 0 Q0 -12 16 0" fill="none" stroke="#1c1924" stroke-width="2" stroke-linecap="round" />
+                  </g>
+
+                  <!-- Right Eye -->
+                  <g id="eyeRight" transform="translate(232, 185)">
+                    <!-- Sclera -->
+                    <ellipse cx="0" cy="0" rx="16" ry="10" fill="#ffffff" stroke="#c0b5b0" stroke-width="0.5" />
+                    <!-- Iris -->
+                    <circle id="irisRight" cx="0" cy="0" r="7.5" fill="#0080aa" />
+                    <circle cx="0" cy="0" r="4" fill="#0b172a" />
+                    <circle cx="0" cy="0" r="6" stroke="#00d2ff" stroke-width="1" fill="none" opacity="0.6" />
+                    <!-- Highlights -->
+                    <circle cx="-2.5" cy="-2.5" r="2" fill="#ffffff" />
+                    <circle cx="2" cy="2" r="1" fill="#ffffff" opacity="0.8" />
+                    <!-- Eyelid for Blinking -->
+                    <ellipse id="eyelidRight" cx="0" cy="0" rx="17" ry="11" fill="url(#skinGlow)" class="eyelid" />
+                    <!-- Lashes line -->
+                    <path d="M-16 0 Q0 -12 16 0" fill="none" stroke="#1c1924" stroke-width="2" stroke-linecap="round" />
+                  </g>
+                </g>
+
+                <!-- Mouth Group (Dynamic Morphing Visemes) -->
+                <g id="mouthGroup" class="mouth-group" transform="translate(200, 252)">
+                  <!-- Default Idle Smile Mouth -->
+                  <path id="mouthShape" d="M-15 0 Q0 6 15 0 Q0 1 -15 0 Z" fill="#c44569" stroke="#8c2543" stroke-width="1" stroke-linecap="round" />
+                  <!-- Subtle Lip Highlight -->
+                  <path id="lipHighlight" d="M-10 2 Q0 5 10 2" stroke="#ff9bb2" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round" />
+                </g>
+
+                <!-- Modern Stylish Hair Bangs (Front Layer) -->
+                <path d="M135 140 Q170 125 200 135 Q235 125 265 140 Q250 85 200 85 Q150 85 135 140 Z" fill="url(#hairGrad)" />
+                <path d="M135 140 Q150 170 160 160 Q175 125 200 135 Q220 120 240 160 Q250 170 265 140 Q275 190 270 240 L265 240 Q260 170 240 145 Q210 130 190 145 Q160 160 140 240 L135 240 Q130 190 135 140 Z" fill="url(#hairGrad)" />
+              </g>
+            </svg>
+          </div>
+
+          <!-- Avatar HUD Status Overlay -->
+          <div class="avatar-hud-overlay">
+            <div class="hud-state-indicator" id="hudStateIndicator">
+              <span class="hud-dot" id="hudDot"></span>
+              <span class="hud-label" id="hudStateLabel">IDLE &bull; READY</span>
+            </div>
+
+            <!-- Audio Waveform Visualizer (Real-time Canvas) -->
+            <div class="audio-wave-container">
+              <canvas id="waveformCanvas" width="280" height="36"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar Action Toolbar -->
+        <div class="avatar-quick-actions">
+          <button class="stage-tool-btn" id="btnTestVoice" title="Test Rukky Speaking">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+            <span>Test Voice</span>
+          </button>
+          <button class="stage-tool-btn btn-interrupt" id="btnStopSpeaking" title="Stop Rukky Speaking Immediately">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" />
+            </svg>
+            <span>Stop Speech</span>
+          </button>
+          <button class="stage-tool-btn" id="btnClearChat" title="Clear Conversation History">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            <span>Clear History</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Right Panel: Conversation Stream & Controls -->
+      <section class="chat-panel-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <div class="chat-title">Training Dialogue Stream</div>
+            <div class="chat-subtitle">Direct interaction with Rukky AI Student</div>
+          </div>
+          <div class="speech-status-indicator" id="speechRecognitionStatus">
+            <span class="sr-dot"></span>
+            <span class="sr-text" id="srStatusText">Mic Standby</span>
+          </div>
+        </div>
+
+        <!-- Chat History Stream -->
+        <div class="chat-messages-scroll" id="chatMessages">
+          <!-- Initial Welcome Message from Rukky -->
+          <div class="chat-message rukky-message">
+            <div class="msg-avatar-icon">
+              <span>R</span>
+            </div>
+            <div class="msg-body">
+              <div class="msg-meta">
+                <span class="msg-sender">Rukky</span>
+                <span class="msg-badge">AI Student</span>
+                <span class="msg-tag demo-tag">Curated Demonstration</span>
+                <span class="msg-time">Just now</span>
+              </div>
+              <div class="msg-text">
+                Hello and welcome! I am <strong>Rukky</strong>, your virtual AI student companion developed by <strong>GISSUF Technology</strong>. 
+                I'm designed to join your AI training classes, explore complex algorithms, ask questions, and practice conversational learning. 
+                <br><br>
+                You can talk to me by clicking the <strong>Microphone button</strong> below or typing in the text box. How can I help you today?
+              </div>
+              <div class="msg-actions">
+                <button class="msg-action-btn btn-read-aloud" title="Read this response aloud">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  </svg>
+                  <span>Listen</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Question Prompts Carousel -->
+        <div class="quick-prompts-bar">
+          <span class="prompts-label">Quick Prompts:</span>
+          <div class="prompts-list" id="quickPromptsList">
+            <button class="prompt-chip" data-prompt="Who are you, Rukky?">Who are you?</button>
+            <button class="prompt-chip" data-prompt="What is GISSUF Technology?">GISSUF Technology</button>
+            <button class="prompt-chip" data-prompt="Explain Machine Learning simply">What is Machine Learning?</button>
+            <button class="prompt-chip" data-prompt="What is an Artificial Neural Network?">Neural Networks</button>
+            <button class="prompt-chip" data-prompt="How can you join my Zoom class?">Zoom Integration</button>
+            <button class="prompt-chip" data-prompt="Ask me an AI quiz question!">AI Quiz Question</button>
+          </div>
+        </div>
+
+        <!-- Speech Transcription Preview Bar (Shows live interim speech recognition) -->
+        <div class="live-transcription-bar" id="liveTranscriptionBar" style="display: none;">
+          <span class="live-transcription-label">Listening:</span>
+          <span class="live-transcription-text" id="liveTranscriptionText">...</span>
+        </div>
+
+        <!-- Chat Input Form & Voice Controls -->
+        <form class="chat-input-form" id="chatInputForm">
+          <div class="input-container">
+            <!-- Voice Microphone Toggle Button -->
+            <button type="button" class="mic-toggle-btn" id="btnToggleMic" title="Click to speak (Microphone input)">
+              <div class="mic-ring" id="micRing"></div>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" id="micIcon">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            </button>
+
+            <!-- Text Input Area -->
+            <input 
+              type="text" 
+              class="chat-text-input" 
+              id="chatTextInput" 
+              placeholder="Ask Rukky a question or click the mic to speak..." 
+              autocomplete="off"
+            />
+
+            <!-- Send Message Button -->
+            <button type="submit" class="send-message-btn" id="btnSendMessage" title="Send message">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </form>
+
+        <!-- Low Resource Hardware Footer Note -->
+        <div class="hardware-foot-note">
+          <span>Optimized for Intel Core i5 &bull; 4GB RAM &bull; Zero GPU required &bull; Low latency</span>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal: Settings & Configuration -->
+  <div class="modal-backdrop" id="settingsModal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title">GISSUF Platform Settings</div>
+          <div class="modal-subtitle">Voice synthesis, avatar aesthetics &amp; backend AI configuration</div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseSettings">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Voice Settings Section -->
+        <div class="settings-section">
+          <div class="section-title">Text-to-Speech (Voice Output)</div>
+          
+          <div class="form-group">
+            <label for="selectVoice">Rukky's Voice:</label>
+            <select id="selectVoice" class="form-select">
+              <option value="">Detecting browser voices...</option>
+            </select>
+            <div class="field-hint">Select any available natural female/clear English voice installed in your browser.</div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="rangeSpeechRate">Speech Rate: <span id="valSpeechRate">1.0x</span></label>
+              <input type="range" id="rangeSpeechRate" min="0.5" max="1.6" step="0.05" value="1.0" class="form-range">
+            </div>
+            <div class="form-group half">
+              <label for="rangeSpeechPitch">Pitch: <span id="valSpeechPitch">1.05</span></label>
+              <input type="range" id="rangeSpeechPitch" min="0.6" max="1.6" step="0.05" value="1.05" class="form-range">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="rangeSpeechVolume">Audio Volume: <span id="valSpeechVolume">100%</span></label>
+            <input type="range" id="rangeSpeechVolume" min="0" max="1" step="0.05" value="1.0" class="form-range">
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="chkAutoSpeak" checked>
+            <label for="chkAutoSpeak">Automatically speak Rukky's responses aloud</label>
+          </div>
+        </div>
+
+        <!-- Microphone & Speech Recognition Section -->
+        <div class="settings-section">
+          <div class="section-title">Speech Recognition (Microphone Input)</div>
+          <div class="form-check">
+            <input type="checkbox" id="chkAutoSendOnSpeech" checked>
+            <label for="chkAutoSendOnSpeech">Auto-send question when you finish speaking</label>
+          </div>
+          <div class="field-hint">Powered by Browser Web Speech Recognition. Works out of the box in Google Chrome, Microsoft Edge, and Chromium-based browsers.</div>
+        </div>
+
+        <!-- Avatar Visuals Section -->
+        <div class="settings-section">
+          <div class="section-title">Avatar Customization &amp; Theme</div>
+          <div class="form-group">
+            <label>Interface Theme Color:</label>
+            <div class="theme-buttons">
+              <button type="button" class="theme-btn active" data-theme="theme-cyan">Electric Cyan</button>
+              <button type="button" class="theme-btn" data-theme="theme-violet">Cyber Violet</button>
+              <button type="button" class="theme-btn" data-theme="theme-emerald">Emerald Matrix</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Backend Connection Notice -->
+        <div class="settings-section">
+          <div class="section-title">Backend AI Model Mode</div>
+          <div class="backend-mode-card">
+            <div class="backend-mode-badge" id="settingsBackendBadge">Demo Persona Mode</div>
+            <p class="backend-mode-desc">
+              Currently running on <strong>curated educational responses</strong> tailored to Rukky's AI Student persona.
+              To connect a live large language model (Google Gemini, OpenAI, or Groq), simply add your API key to the 
+              <code>.env</code> file in the project folder and restart the server. Your API key stays 100% secure on your computer.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btnSaveSettings">Save &amp; Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Zoom & OBS Integration Guide -->
+  <div class="modal-backdrop" id="zoomGuideModal" style="display: none;">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title">Zoom Meeting Integration Guide (Version 0.1)</div>
+          <div class="modal-subtitle">How to make Rukky appear as a participant in Zoom classes today</div>
+        </div>
+        <button class="modal-close-btn" id="btnCloseZoomGuide">&times;</button>
+      </div>
+
+      <div class="modal-body zoom-guide-content">
+        <div class="guide-banner">
+          <div class="guide-banner-icon">💡</div>
+          <div class="guide-banner-text">
+            <strong>Immediate Zero-Cost Solution:</strong> In Version 0.1, you can bring Rukky directly into any Zoom meeting using free, industry-standard tools: <strong>OBS Studio Virtual Camera</strong> and <strong>VB-CABLE Virtual Audio Device</strong>.
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">Step 1</div>
+          <div class="step-content">
+            <h4>Install Free Tools (100% Free &amp; Lightweight)</h4>
+            <ul>
+              <li><strong>OBS Studio:</strong> Free screen and video compositor (<a href="https://obsproject.com/" target="_blank" rel="noopener">obsproject.com</a>)</li>
+              <li><strong>VB-CABLE Virtual Audio Device:</strong> Free audio routing driver (<a href="https://vb-audio.com/Cable/" target="_blank" rel="noopener">vb-audio.com/Cable</a>)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">Step 2</div>
+          <div class="step-content">
+            <h4>Capture Rukky's Video in OBS</h4>
+            <ul>
+              <li>Click the <strong>Stage View</strong> button on Rukky's viewport in this application to open the dedicated avatar-only window.</li>
+              <li>In OBS Studio, click <strong>Sources (+) &rarr; Window Capture</strong>, and select the GISSUF AI Avatar window.</li>
+              <li>Crop the capture so only Rukky's animated avatar is framed in your camera scene.</li>
+              <li>In OBS Studio, click <strong>Start Virtual Camera</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">Step 3</div>
+          <div class="step-content">
+            <h4>Route Rukky's Voice &amp; Microphone</h4>
+            <ul>
+              <li>In Windows Sound Settings, set Rukky's browser output to <strong>CABLE Input (VB-Audio Virtual Cable)</strong>.</li>
+              <li>In Zoom Settings &rarr; Audio, select <strong>CABLE Output (VB-Audio Virtual Cable)</strong> as your Zoom Microphone.</li>
+              <li>This allows everyone in your Zoom training class to hear Rukky speak in crystal-clear audio!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">Step 4</div>
+          <div class="step-content">
+            <h4>Select OBS Virtual Camera in Zoom</h4>
+            <ul>
+              <li>Open Zoom &rarr; Settings &rarr; Video.</li>
+              <li>Select <strong>OBS Virtual Camera</strong> as your Camera.</li>
+              <li>Rukky will now appear in your Zoom meeting with synchronized speaking animations, blinking, and professional GISSUF Technology branding!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="future-sdk-box">
+          <h4>Future Autonomous Bot Roadmap (v0.3 &ndash; v1.0)</h4>
+          <p>
+            For future versions, GISSUF Technology is researching the <strong>Zoom Meeting SDK for Web</strong> and server-side meeting bots (via Recall.ai / Daily.co / custom headless WebRTC bots) that will allow Rukky to enter Zoom meetings independently with meeting ID and passcode. See <code>docs/ZOOM_INTEGRATION_GUIDE.md</code> for the complete technical blueprint.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btnOkZoomGuide">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/avatar.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
